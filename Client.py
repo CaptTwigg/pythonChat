@@ -1,13 +1,24 @@
 import socket
-import time
+import threading
 
-HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 65432
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+def send():
+    while True:
+        data = input()
+        s.sendall(data.encode())
 
-    s.connect((HOST, PORT))
-    s.send("hello from client".encode())
 
-    data = s.recv(1024)
-    print(data.decode())
+def receive():
+    while True:
+        data = s.recv(1024)
+        print(data.decode())
+
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('localhost', 50000))
+t1 = threading.Thread(target=send)
+print("Send created")
+t2 = threading.Thread(target=receive)
+print("Receive created")
+t1.start()
+t2.start()
