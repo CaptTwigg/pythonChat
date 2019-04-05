@@ -5,20 +5,26 @@ import threading
 def send():
     while True:
         data = input()
-        s.sendall(data.encode())
+        s.send(data.encode())
 
 
 def receive():
     while True:
         data = s.recv(1024)
+        if not data:
+            continue
         print(data.decode())
 
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('localhost', 50000))
+new_port = int(s.recv(1024).decode())
+s.close()
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('localhost', new_port))
+
 t1 = threading.Thread(target=send)
-print("Send created")
 t2 = threading.Thread(target=receive)
-print("Receive created")
+print("Connected to chat")
 t1.start()
 t2.start()
