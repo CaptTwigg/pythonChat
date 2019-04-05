@@ -1,0 +1,3 @@
+This is the first message send in this chat
+this is the second
+Hello there!

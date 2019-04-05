@@ -18,8 +18,10 @@ def receive():
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('localhost', 50000))
+# s.send(input("Enter username: ").encode())
 new_port = int(s.recv(1024).decode())
 s.close()
+
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('localhost', new_port))
 
